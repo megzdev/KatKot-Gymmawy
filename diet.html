@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>النظام الغذائي - KatKot Gymmawy</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      overflow-x: hidden;
+    }
+    .english {
+      font-family: 'Montserrat', sans-serif;
+    }
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      min-height: 80px;
+    }
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+    .logo img {
+      height: 70px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #000;
+      text-decoration: none;
+      font-size: 1.1rem;
+      margin-left: 1.5rem;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover {
+      color: #f6ca11;
+    }
+    .dashboard-btn {
+      background-color: #f6ca11;
+      color: #000;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    .dashboard-btn:hover {
+      background-color: #e0b810;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background-color: #000;
+      transition: all 0.3s ease;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 80px;
+      right: 0;
+      width: 100%;
+      background-color: #f6ca11;
+      flex-direction: column;
+      padding: 1rem;
+      z-index: 999;
+      transition: transform 0.3s ease;
+      transform: translateX(100%);
+    }
+    .mobile-menu.active {
+      display: flex;
+      transform: translateX(0);
+    }
+    .mobile-menu a {
+      color: #000;
+      text-decoration: none;
+      padding: 1rem;
+      font-size: 1.2rem;
+      text-align: right;
+      transition: background-color 0.3s ease;
+    }
+    .mobile-menu a:hover {
+      background-color: #e0b810;
+    }
+    main {
+      min-height: calc(100vh - 80px);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #f6ca11;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e0b810;
+    }
+    
+    /* إضافة ستايل جديد للسيكشن المطلوب */
+    .diet-hero {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .diet-image {
+      flex: 1;
+    }
+    
+    .diet-image img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+    
+    .diet-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .diet-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #f6ca11;
+    }
+    
+    .diet-subtitle {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    /* ستايل الجدول */
+    .diet-table-container {
+      margin: 3rem 0;
+      overflow-x: auto;
+      border-radius: 15px;
+    }
+    
+    .diet-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      font-family: 'Tajawal', sans-serif;
+      background-color: #fff;
+    }
+    
+    .diet-table thead tr {
+      background-color: #f6ca11;
+      color: #000;
+      font-weight: bold;
+      text-align: center;
+      height: 60px;
+    }
+    
+    .diet-table th {
+      padding: 16px 20px;
+      font-size: 1.15rem;
+      border: none;
+      letter-spacing: 0.5px;
+    }
+    
+    .diet-table td {
+      padding: 18px;
+      border: none;
+      vertical-align: middle;
+      font-size: 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      line-height: 1.5;
+      text-align: center;
+    }
+    
+    .diet-table tbody tr {
+      transition: all 0.3s ease;
+      background-color: #ffffff;
+    }
+    
+    .diet-table tbody tr:hover {
+      background-color: #f9f9f9;
+    }
+    
+    .diet-table td:first-child {
+      font-weight: bold;
+      color: #222;
+      background-color: #f5f5f5;
+      border-right: 3px solid #f6ca11;
+    }
+    
+    .diet-table td:nth-child(3) {
+      font-weight: bold;
+      color: #e74c3c;
+    }
+    
+    .diet-table tbody tr:last-child {
+      border-bottom: none;
+    }
+    
+    /* ستايل الأزرار */
+    .diet-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .diet-btn {
+      background-color: #f6ca11;
+      color: #000;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+    
+    .diet-btn:hover {
+      background-color: #e0b810;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      border-color: #fff;
+    }
+    
+    .diet-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* ستايل النافذة المنبثقة */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .popup-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .popup-content {
+      background-color: #fff;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      direction: rtl;
+    }
+    
+    .popup-header {
+      background-color: #f6ca11;
+      color: #000;
+      padding: 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      position: relative;
+    }
+    
+    .popup-close {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #000;
+      transition: color 0.3s ease;
+    }
+    
+    .popup-close:hover {
+      color: #e74c3c;
+    }
+    
+    .popup-body {
+      padding: 1.5rem;
+      max-height: 60vh;
+      overflow-y: auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .popup-body ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .popup-body li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .popup-body li:last-child {
+      border-bottom: none;
+    }
+    
+    /* ستايل التمرير داخل النافذة */
+    .popup-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .popup-body::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    
+    .popup-body::-webkit-scrollbar-thumb {
+      background: #f6ca11;
+      border-radius: 3px;
+    }
+    
+    .popup-body::-webkit-scrollbar-thumb:hover {
+      background: #e0b810;
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .dashboard-btn {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 0.4rem 0.8rem;
+        font-size: 1rem;
+      }
+      .logo {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      nav {
+        padding: 1rem;
+        min-height: 80px;
+      }
+      .diet-hero {
+        flex-direction: column;
+      }
+      
+      .diet-table th,
+      .diet-table td {
+        padding: 12px 8px;
+        font-size: 14px;
+      }
+      
+      .diet-table th {
+        font-size: 16px;
+      }
+      
+      .diet-table td:first-child {
+        font-size: 15px;
+      }
+      
+      .diet-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .diet-btn {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+      }
+      
+      .popup-content {
+        width: 95%;
+        max-height: 85vh;
+      }
+      
+      .popup-body {
+        max-height: 65vh;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="nav-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="schedule.html">جدول التمرين</a>
+        <a href="diet.html">النظام الغذائي</a>
+      </div>
+      <div class="logo">
+        <a href="index.html"><img src="logo.png" alt="KatKot Gymmawy Logo"></a>
+      </div>
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <a href="dashboard.html" class="dashboard-btn">داشبورد</a>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">الرئيسية</a>
+      <a href="schedule.html">جدول التمرين</a>
+      <a href="diet.html">النظام الغذائي</a>
+    </div>
+  </header>
+  <main>
+    <!-- السيكشن المطلوب -->
+    <section class="diet-hero">
+      <div class="diet-image">
+        <img src="diet.png" alt="النظام الغذائي">
+      </div>
+      <div class="diet-text">
+        <h1 class="diet-title">النظام الغذائي</h1>
+        <p class="diet-subtitle">افتكر ان عامل كل ده ليه و افتكر ان ممكن فشهرين بس تظبط كل ده يصديقي</p>
+      </div>
+    </section>
+    
+    <!-- جدول النظام الغذائي -->
+    <section class="diet-table-container">
+      <table class="diet-table">
+        <thead>
+          <tr>
+            <th>اليوم</th>
+            <th>الوجبة الأساسية</th>
+            <th>السعرات تقريبًا</th>
+            <th>الكارديو</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>السبت</td>
+            <td>200 جم صدر دجاج + سلطة خضراء كبيرة + بيضة مسلوقة</td>
+            <td>1200 سعرة</td>
+            <td>20 دقيقة HIIT (ركض/قفز)</td>
+          </tr>
+          <tr>
+            <td>الأحد</td>
+            <td>150 جم تونة + خضار سوتيه (كوسة، جزر، بروكلي) + بيضة</td>
+            <td>1000 سعرة</td>
+            <td>45 دقيقة مشي سريع (LISS)</td>
+          </tr>
+          <tr>
+            <td>الإثنين</td>
+            <td>150 جم لحم أحمر مشوي + سلطة + بيضة مسلوقة</td>
+            <td>1100 سعرة</td>
+            <td>25 دقيقة HIIT أو Stairmaster</td>
+          </tr>
+          <tr>
+            <td>الثلاثاء</td>
+            <td>2 بيضة مسلوقة + شوربة عدس خفيفة + سلطة خضراء</td>
+            <td>950 سعرة</td>
+            <td>45 دقيقة مشي صباحًا (صيام)</td>
+          </tr>
+          <tr>
+            <td>الأربعاء</td>
+            <td>200 جم سمك مشوي (بلطي أو سلمون) + خضار + بيضة</td>
+            <td>1100 سعرة</td>
+            <td>30 دقيقة HIIT + تمارين بطن خفيفة</td>
+          </tr>
+          <tr>
+            <td>الخميس</td>
+            <td>150 جم تونة + خضار سوتيه + بيضة</td>
+            <td>1000 سعرة</td>
+            <td>20 دقيقة مشي بعد التمرين</td>
+          </tr>
+          <tr>
+            <td>الجمعة</td>
+            <td>150 جم رز بني + 200 جم دجاج + سلطة + بيضة</td>
+            <td>1400 سعرة</td>
+            <td>20 دقيقة LISS أو راحة</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- الأزرار -->
+      <div class="diet-buttons">
+        <button class="diet-btn" onclick="openPopup('forbidden')">الحجات الممنوعة</button>
+        <button class="diet-btn" onclick="openPopup('snacks')">المسليات طول اليوم</button>
+      </div>
+    </section>
+
+    <!-- النافذة المنبثقة للحجات الممنوعة -->
+    <div class="popup-overlay" id="forbiddenPopup">
+      <div class="popup-content">
+        <div class="popup-header">
+          الحجات الممنوعة
+          <button class="popup-close" onclick="closePopup('forbidden')">&times;</button>
+        </div>
+        <div class="popup-body">
+          <ul>
+            <li>المشروبات الغازية (مثل الكولا والبيبسي)</li>
+            <li>الأطعمة المقلية (مثل البطاطس المقلية والدجاج المقلي)</li>
+            <li>السكريات المكررة (مثل الحلويات والكعك)</li>
+            <li>الخبز الأبيض والمعجنات</li>
+            <li>الوجبات السريعة (مثل البيتزا والهامبرغر)</li>
+            <li>الأطعمة الغنية بالدهون المشبعة (مثل الزبدة والقشطة)</li>
+            <li>المشروبات الكحولية</li>
+            <li>الأطعمة المصنعة (مثل النقانق واللانشون)</li>
+            <li>الآيس كريم والمثلجات السكرية</li>
+            <li>الشيبسي والمقرمشات المملحة</li>
+            <li>العصائر المعلبة المحلاة</li>
+            <li>الكريمة المخفوقة</li>
+            <li>الأطعمة الغنية بالصوديوم (مثل المخللات)</li>
+            <li>المايونيز والصلصات الدسمة</li>
+            <li>الشوكولاتة غير الداكنة (تحتوي على سكر عالي)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- النافذة المنبثقة للمسليات -->
+    <div class="popup-overlay" id="snacksPopup">
+      <div class="popup-content">
+        <div class="popup-header">
+          المسليات طول اليوم
+          <button class="popup-close" onclick="closePopup('snacks')">&times;</button>
+        </div>
+        <div class="popup-body">
+          <ul>
+            <li>مكسرات غير مملحة (لوز، جوز، كاجو) - 10-15 حبة</li>
+            <li>زبادي يوناني قليل الدسم - 100 جم</li>
+            <li>خيار أو جزر مقطع - كمية مفتوحة</li>
+            <li>تفاحة أو برتقالة - قطعة واحدة</li>
+            <li>بيض مسلوق - 1-2 بيضة</li>
+            <li>توت أو فراولة - نصف كوب</li>
+            <li>شاي أخضر بدون سكر - كوب</li>
+            <li>ماء بالليمون أو النعناع - كمية مفتوحة</li>
+            <li>فشار بدون زبدة أو زيت - كوب واحد</li>
+            <li>شريحة جبن قليل الدسم - 20 جم</li>
+            <li>عنب - 10-12 حبة</li>
+            <li>كرفس مع زبدة لوز (ملعقة صغيرة)</li>
+            <li>شوكولاتة داكنة 70% أو أعلى - 15 جم</li>
+            <li>مخلل خيار منزلي - 2-3 قطع</li>
+            <li>عصير ليمون طازج بدون سكر - كوب صغير</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('active');
+    }
+
+    function openPopup(type) {
+      const popup = document.getElementById(type + 'Popup');
+      popup.classList.add('active');
+      document.body.style.overflow = 'hidden'; // منع التمرير في الخلفية
+    }
+
+    function closePopup(type) {
+      const popup = document.getElementById(type + 'Popup');
+      popup.classList.remove('active');
+      document.body.style.overflow = 'auto'; // إعادة التمرير
+    }
+  </script>
+</body>
+</html>

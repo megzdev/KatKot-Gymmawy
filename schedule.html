@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جدول التمرين - KatKot Gymmawy</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      overflow-x: hidden;
+    }
+    .english {
+      font-family: 'Montserrat', sans-serif;
+    }
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      min-height: 80px;
+    }
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+    .logo img {
+      height: 70px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #000;
+      text-decoration: none;
+      font-size: 1.1rem;
+      margin-left: 1.5rem;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover {
+      color: #f6ca11;
+    }
+    .dashboard-btn {
+      background-color: #f6ca11;
+      color: #000;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    .dashboard-btn:hover {
+      background-color: #e0b810;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background-color: #000;
+      transition: all 0.3s ease;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 80px;
+      right: 0;
+      width: 100%;
+      background-color: #f6ca11;
+      flex-direction: column;
+      padding: 1rem;
+      z-index: 999;
+      transition: transform 0.3s ease;
+      transform: translateX(100%);
+    }
+    .mobile-menu.active {
+      display: flex;
+      transform: translateX(0);
+    }
+    .mobile-menu a {
+      color: #000;
+      text-decoration: none;
+      padding: 1rem;
+      font-size: 1.2rem;
+      text-align: right;
+      transition: background-color 0.3s ease;
+    }
+    .mobile-menu a:hover {
+      background-color: #e0b810;
+    }
+    main {
+      min-height: calc(100vh - 80px);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .schedule-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 0;
+    }
+    .schedule-image {
+      max-width: 500px;
+      width: 100%;
+    }
+    .schedule-content {
+      flex: 1;
+      padding-right: 2rem;
+    }
+    .schedule-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .schedule-description {
+      font-size: 1.2rem;
+      color: #666;
+      line-height: 1.5;
+    }
+    .exercise-section {
+      padding: 2rem 0;
+    }
+    .exercise-cards {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .exercise-card {
+      background-color: #f6ca11;
+      border: 2px solid #000;
+      border-radius: 12px;
+      padding: 1rem;
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 250px;
+    }
+    .exercise-card:hover {
+      transform: translateY(-5px);
+    }
+    .exercise-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .exercise-card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .popout {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      max-width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 2000;
+      padding: 2rem;
+    }
+    .popout.active {
+      display: block;
+    }
+    .popout-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #000;
+    }
+    .popout table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .popout th, .popout td {
+      border: 1px solid #ddd;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    .popout th {
+      background-color: #f6ca11;
+      font-weight: 700;
+    }
+    .popout img {
+      max-width: 100px;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #f6ca11;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e0b810;
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .dashboard-btn {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 0.4rem 0.8rem;
+        font-size: 1rem;
+      }
+      .logo {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      nav {
+        padding: 1rem;
+        min-height: 80px;
+      }
+      .schedule-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .schedule-image {
+        max-width: 80%;
+        margin-bottom: 1.5rem;
+      }
+      .schedule-content {
+        padding-right: 0;
+      }
+      .schedule-title {
+        font-size: 1.8rem;
+      }
+      .schedule-description {
+        font-size: 1rem;
+      }
+      .exercise-cards {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .exercise-card {
+        padding: 0.8rem;
+        min-height: 200px;
+      }
+      .exercise-card img {
+        height: 120px;
+      }
+      .exercise-card-title {
+        font-size: 1.3rem;
+      }
+      .popout {
+        max-width: 95%;
+        max-height: 90vh;
+        padding: 1rem;
+      }
+      .popout img {
+        max-width: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="nav-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="schedule.html">جدول التمرين</a>
+        <a href="diet.html">النظام الغذائي</a>
+      </div>
+      <div class="logo">
+        <a href="index.html"><img src="logo.png" alt="KatKot Gymmawy Logo"></a>
+      </div>
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <a href="dashboard.html" class="dashboard-btn">داشبورد</a>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="index.html">الرئيسية</a>
+      <a href="schedule.html">جدول التمرين</a>
+      <a href="diet.html">النظام الغذائي</a>
+    </div>
+  </header>
+  <main>
+    <section class="schedule-section">
+      <div class="schedule-content">
+        <h2 class="schedule-title">جدول التمرين</h2>
+        <p class="schedule-description">افتكر انك كتكوت جيماوي وان الفورمة بتجيب الحرمة</p>
+      </div>
+      <img src="bebo.png" alt="Bebo" class="schedule-image">
+    </section>
+    <section class="exercise-section">
+      <div class="exercise-cards">
+        <div class="exercise-card" onclick="openPopout('chest')">
+          <img src="1.png" alt="صدر">
+          <h3 class="exercise-card-title">صدر</h3>
+        </div>
+        <div class="exercise-card" onclick="openPopout('back')">
+          <img src="2.png" alt="ظهر">
+          <h3 class="exercise-card-title">ظهر</h3>
+        </div>
+        <div class="exercise-card" onclick="openPopout('arms')">
+          <img src="3.png" alt="دراع">
+          <h3 class="exercise-card-title">دراع</h3>
+        </div>
+        <div class="exercise-card" onclick="openPopout('legs')">
+          <img src="4.png" alt="رجل">
+          <h3 class="exercise-card-title">رجل</h3>
+        </div>
+      </div>
+    </section>
+    <!-- Popouts -->
+    <div class="popout" id="chest-popout">
+      <span class="popout-close" onclick="closePopout('chest')">×</span>
+      <h2>تمارين الصدر</h2>
+      <table>
+        <tr>
+          <th>اسم التمرين</th>
+          <th>شكل التمرين</th>
+          <th>العدات</th>
+          <th>المجاميع</th>
+        </tr>
+        <tr>
+          <td>بنتش بريس</td>
+          <td><img src="exercise1.png" alt="بنتش بريس"></td>
+          <td>12-15</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>إنكلاين بنتش</td>
+          <td><img src="exercise2.png" alt="إنكلاين بنتش"></td>
+          <td>10-12</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>فلاي دمبل</td>
+          <td><img src="exercise3.png" alt="فلاي دمبل"></td>
+          <td>12-15</td>
+          <td>3</td>
+        </tr>
+      </table>
+    </div>
+    <div class="popout" id="back-popout">
+      <span class="popout-close" onclick="closePopout('back')">×</span>
+      <h2>تمارين الظهر</h2>
+      <table>
+        <tr>
+          <th>اسم التمرين</th>
+          <th>شكل التمرين</th>
+          <th>العدات</th>
+          <th>المجاميع</th>
+        </tr>
+        <tr>
+          <td>ديدليفت</td>
+          <td><img src="exercise4.png" alt="ديدليفت"></td>
+          <td>8-10</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>بول أوفر</td>
+          <td><img src="exercise5.png" alt="بول أوفر"></td>
+          <td>10-12</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>لات بول داون</td>
+          <td><img src="exercise6.png" alt="لات بول داون"></td>
+          <td>12-15</td>
+          <td>3</td>
+        </tr>
+      </table>
+    </div>
+    <div class="popout" id="arms-popout">
+      <span class="popout-close" onclick="closePopout('arms')">×</span>
+      <h2>تمارين الدراع</h2>
+      <table>
+        <tr>
+          <th>اسم التمرين</th>
+          <th>شكل التمرين</th>
+          <th>العدات</th>
+          <th>المجاميع</th>
+        </tr>
+        <tr>
+          <td>باربل كيرل</td>
+          <td><img src="exercise7.png" alt="باربل كيرل"></td>
+          <td>10-12</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>ترايسبس دفع</td>
+          <td><img src="exercise8.png" alt="ترايسبس دفع"></td>
+          <td>12-15</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>هامر كيرل</td>
+          <td><img src="exercise9.png" alt="هامر كيرل"></td>
+          <td>10-12</td>
+          <td>3</td>
+        </tr>
+      </table>
+    </div>
+    <div class="popout" id="legs-popout">
+      <span class="popout-close" onclick="closePopout('legs')">×</span>
+      <h2>تمارين الرجل</h2>
+      <table>
+        <tr>
+          <th>اسم التمرين</th>
+          <th>شكل التمرين</th>
+          <th>العدات</th>
+          <th>المجاميع</th>
+        </tr>
+        <tr>
+          <td>سكوات</td>
+          <td><img src="exercise10.png" alt="سكوات"></td>
+          <td>10-12</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>لانجز</td>
+          <td><img src="exercise11.png" alt="لانجز"></td>
+          <td>12-15</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>لج بريس</td>
+          <td><img src="exercise12.png" alt="لج بريس"></td>
+          <td>10-12</td>
+          <td>3</td>
+        </tr>
+      </table>
+    </div>
+  </main>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('active');
+    }
+
+    function openPopout(type) {
+      // Close all popouts first
+      document.querySelectorAll('.popout').forEach(popout => {
+        popout.classList.remove('active');
+      });
+      // Open the selected popout
+      const popout = document.getElementById(type + '-popout');
+      popout.classList.add('active');
+    }
+
+    function closePopout(type) {
+      const popout = document.getElementById(type + '-popout');
+      popout.classList.remove('active');
+    }
+  </script>
+</body>
+</html>
